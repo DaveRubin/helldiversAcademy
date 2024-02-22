@@ -20,7 +20,7 @@
 	main {
 		padding: 0;
 		margin: 0;
-		background-image: url('/images/banner.jpeg');
+		background-image: url('./images/banner.jpeg');
 		height: 100vh;
 		width: 100vw;
 		display: flex;
