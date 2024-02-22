@@ -1,27 +1,41 @@
-<script>
+<script lang="ts">
 	import { stratagems } from '$lib/stategem';
-
 	import StratagemKeys from '$lib/StratagemKeys.svelte';
 
-	/**
-	 * @param {{ detail: any; }} event
-	 */
-	function handleActionDone(event) {
+	function handleActionDone(event: any) {
 		console.log('Callback received:', event.detail);
 	}
 </script>
 
 <main>
-	<ul>
-		<StratagemKeys inputs={stratagems[0].Inputs || []} on:actionDone={handleActionDone} />
-		-----
-		<StratagemKeys inputs={stratagems[1].Inputs || []} on:actionDone={handleActionDone} />
-		{#each stratagems as number}
-			<div>
-				<h4>
-					{number.Name} ({number.section})
-				</h4>
-			</div>
+	<div class="main-container">
+		{#each stratagems as stratagem}
+			<StratagemKeys {stratagem} on:actionDone={handleActionDone} />
 		{/each}
-	</ul>
+	</div>
 </main>
+
+<style>
+	main {
+		padding: 0;
+		margin: 0;
+		background-image: url('images/banner.jpeg');
+		height: 100vh;
+		width: 100vw;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+	}
+	.main-container {
+		/* background-color: grey; */
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+		padding: 32px;
+		width: 80vw;
+		height: 80vh;
+		overflow: scroll;
+		background: rgba(0, 0, 0, 0.4);
+		border-radius: 16px;
+	}
+</style>
