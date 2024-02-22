@@ -17,6 +17,7 @@ export const listenToChanges = (dispatch: (action: any) => void) => {
     }
     function handleKeydown(event: any) {
         const pressedKey = keys[event.key.toUpperCase()];
+        console.log(event.key.toUpperCase(), pressedKey)
         if (pressedKey) {
             dispatch({ pressedKey })
         }
