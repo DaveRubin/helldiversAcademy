@@ -11,7 +11,7 @@
 	const groups = Object.keys(sections);
 
 	function handleActionDone(event: any) {
-		console.log('Callback received:', event.detail);
+		// console.log('Callback received:', event.detail);
 	}
 
 	function toggle(group: string) {

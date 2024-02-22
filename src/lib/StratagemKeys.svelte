@@ -1,29 +1,52 @@
 <script lang="ts">
-	import { createEventDispatcher } from 'svelte';
-	import { onMount } from 'svelte';
+	import { createEventDispatcher, onMount } from 'svelte';
+
+	import { persistedStore } from './store';
+
 	import { listenToChanges } from '$lib/controller';
 	import type { Stratagem } from './types';
 	import { stratagems } from './stategem';
 	import Arrow from './arrow.svelte';
 
+	export let stratagem: Stratagem = stratagems[0];
+	let highScore = persistedStore(stratagem.text, '0');
+
 	const dispatch = createEventDispatcher();
 
-	export let stratagem: Stratagem = stratagems[0];
 	const inputs = stratagem.input;
 
 	let pressedInputs: string[] = [];
 	let isOn = false;
 	let isWrong = false;
+	let startTime = Date.now();
+	let completionTime = '';
+	// let highScore = localStorage.getItem(stratagem.text) || '-';
+
+	const getTime = (time: number) => Math.floor(time / 10) / 100 + 's';
+	let highScoretime = $highScore ? getTime($highScore) : '-';
+	function showComplete() {
+		const time = Date.now() - startTime;
+		completionTime = getTime(time);
+		setTimeout(() => {
+			completionTime = '';
+		}, 3000);
+		if (time < $highScore || $highScore === '0') {
+			highScore.set(time);
+			highScoretime = completionTime;
+		}
+	}
 
 	// @ts-ignore
 	const updatePressed = (key) => {
-		// console.log(pressedInputs);
 		const newKeys = [...pressedInputs, key];
 		const isCorrect = newKeys.every((key, index) => inputs[index] === key);
+		const time = Date.now() - startTime;
+
 		if (isCorrect) {
 			pressedInputs = newKeys;
 			if (pressedInputs.length === inputs.length) {
 				dispatch('actionDone', { completed: true });
+				showComplete();
 			}
 		} else {
 			isOn = false;
@@ -37,9 +60,12 @@
 		return listenToChanges((action) => {
 			if (action.toggle !== undefined) {
 				isOn = action.toggle;
-				console.log(isOn);
+
 				if (!isOn) {
 					pressedInputs = [];
+				} else {
+					startTime = Date.now();
+					completionTime = '';
 				}
 				isWrong = false;
 			}
@@ -60,7 +86,7 @@
 	</div>
 	<div>
 		<div>
-			<p>{stratagem.text}</p>
+			<p>{stratagem.text} - {highScoretime}</p>
 		</div>
 		<div class="container">
 			{#each inputs as item, index (item + '-' + index)}
@@ -70,9 +96,28 @@
 			{/each}
 		</div>
 	</div>
+	{#if completionTime}
+		<p class="complete">{completionTime}</p>
+	{/if}
 </div>
 
 <style>
+	@keyframes moveRightFadeOut {
+		from {
+			transform: translateX(0);
+			opacity: 1;
+		}
+		to {
+			transform: translateX(32px);
+			opacity: 0;
+		}
+	}
+	.complete {
+		position: absolute;
+		right: -48px;
+		font-size: 24px;
+		animation: moveRightFadeOut 2s forwards;
+	}
 	p {
 		margin: 0;
 		font-family: Oswald;
@@ -95,10 +140,10 @@
 	.container {
 		display: flex;
 		gap: 8px;
-
 		align-items: center;
 
 		&.main {
+			position: relative;
 			transition: all 0.1s;
 			margin-bottom: 16px;
 			background-color: rgba(0, 0, 0, 0.2);
@@ -109,7 +154,7 @@
 			min-height: 40px;
 			max-height: 40px;
 			flex: 1;
-			overflow: hidden;
+			/* overflow: hidden; */
 
 			&.wrong {
 				opacity: 0.4;
