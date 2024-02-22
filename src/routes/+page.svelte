@@ -25,15 +25,21 @@
 			? stratagems.filter((s) => groupFilters[s.section])
 			: stratagems;
 	}
+	let uniqueKey = Date.now(); // Initialize with a unique value
+
+	// Update uniqueKey whenever filteredStratagem changes
+	$: filteredStartegem, (uniqueKey = Date.now());
 </script>
 
 <main>
 	<img class="background-image" alt="background" src="/images/banner.jpeg" />
 	<div class="main-container">
 		<div class="list-container">
-			{#each filteredStartegem as stratagem}
-				<StratagemKeys {stratagem} on:actionDone={handleActionDone} />
-			{/each}
+			{#key uniqueKey}
+				{#each filteredStartegem as stratagem}
+					<StratagemKeys {stratagem} on:actionDone={handleActionDone} />
+				{/each}
+			{/key}
 		</div>
 		<div class="filters-container">
 			{#each groups as group}
