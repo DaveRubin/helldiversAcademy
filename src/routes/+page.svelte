@@ -3,18 +3,50 @@
 	import { stratagems } from '$lib/stategem';
 	import StratagemKeys from '$lib/StratagemKeys.svelte';
 	import _ from 'lodash';
-	const groups = Object.entries(_.groupBy(stratagems, 'section'));
+	const sections = _.groupBy(stratagems, 'section');
+	let groupFilters: Record<string, any> = {};
+	let filteredStartegem = Object.keys(groupFilters).length
+		? stratagems.filter((s) => groupFilters[s.section])
+		: stratagems;
+	const groups = Object.keys(sections);
+
 	function handleActionDone(event: any) {
 		console.log('Callback received:', event.detail);
+	}
+
+	function toggle(group: string) {
+		if (groupFilters[group]) {
+			delete groupFilters[group];
+			groupFilters = { ...groupFilters };
+		} else {
+			groupFilters = { ...groupFilters, [group]: true };
+		}
+		filteredStartegem = Object.keys(groupFilters).length
+			? stratagems.filter((s) => groupFilters[s.section])
+			: stratagems;
 	}
 </script>
 
 <main>
 	<img class="background-image" alt="background" src="/images/banner.jpeg" />
 	<div class="main-container">
-		{#each stratagems as stratagem}
-			<StratagemKeys {stratagem} on:actionDone={handleActionDone} />
-		{/each}
+		<div class="list-container">
+			{#each filteredStartegem as stratagem}
+				<StratagemKeys {stratagem} on:actionDone={handleActionDone} />
+			{/each}
+		</div>
+		<div class="filters-container">
+			{#each groups as group}
+				<!-- svelte-ignore a11y-click-events-have-key-events -->
+				<!-- svelte-ignore a11y-no-static-element-interactions -->
+				<div
+					on:click={() => toggle(group)}
+					class={'section-filter ' + (groupFilters[group] ? 'selected' : '')}
+				>
+					{group}
+				</div>
+			{/each}
+		</div>
 	</div>
 </main>
 
@@ -44,13 +76,34 @@
 
 	.main-container {
 		display: flex;
-		flex-direction: column;
+		flex-direction: row;
 		padding: 32px;
 		width: 80vw;
 		height: 80vh;
-		overflow: scroll;
 		background: rgba(0, 0, 0, 0.5);
-		border-radius: 16px;
+		border-radius: 8px;
 		border: solid 1px rgba(255, 255, 255, 0.5);
+		display: flex;
+	}
+	.list-container {
+		overflow: scroll;
+		flex: 2;
+	}
+	.filters-container {
+		overflow: scroll;
+		flex: 1;
+	}
+	.section-filter {
+		background: rgba(0, 0, 0, 0.5);
+		border-radius: 8px;
+		padding: 8px;
+		border: solid 1px rgba(255, 255, 255, 0.5);
+		text-align: center;
+		cursor: pointer;
+		margin-bottom: 8px;
+		&.selected {
+			color: yellow;
+			border-color: yellow;
+		}
 	}
 </style>

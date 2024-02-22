@@ -40,4 +40,7 @@
 	font-style: normal;
 }
 
-body {}
+body {
+	font-family: Oswald;
+	color: white;
+}
