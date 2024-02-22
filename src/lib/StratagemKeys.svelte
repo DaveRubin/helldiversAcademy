@@ -13,6 +13,7 @@
 
 	let pressedInputs: string[] = [];
 	let isOn = false;
+	let isWrong = false;
 
 	// @ts-ignore
 	const updatePressed = (key) => {
@@ -27,6 +28,7 @@
 		} else {
 			isOn = false;
 			pressedInputs = [];
+			isWrong = true;
 			dispatch('actionDone', { completed: false });
 		}
 	};
@@ -39,6 +41,7 @@
 				if (!isOn) {
 					pressedInputs = [];
 				}
+				isWrong = false;
 			}
 			if (action.pressedKey) {
 				if (isOn) {
@@ -49,7 +52,7 @@
 	});
 </script>
 
-<div class={'main container ' + (isOn ? 'on' : 'off')}>
+<div class={'main container ' + (isOn ? 'on' : 'off') + ' ' + (isWrong ? 'wrong' : '')}>
 	<div class="image-container">
 		{#if stratagem.icon}
 			<img src={stratagem.icon} />
@@ -90,21 +93,32 @@
 	}
 
 	.container {
-		&.main {
-			transition: background-color 0.1s;
-			background: rgba(1, 0, 0, 0.4);
-			width: max-content;
-			padding: 16px;
-			border-radius: 8px;
-			border: 1px solid rgba(255, 255, 255, 0.5);
-		}
-		&.on {
-			background-color: #222222;
-		}
 		display: flex;
 		gap: 8px;
 
 		align-items: center;
+
+		&.main {
+			transition: all 0.1s;
+			margin-bottom: 16px;
+			background-color: rgba(0, 0, 0, 0.2);
+			width: max-content;
+			padding: 16px;
+			border-radius: 8px;
+			border: 1px solid rgba(255, 255, 255, 0.5);
+			min-height: 40px;
+			max-height: 40px;
+			flex: 1;
+			overflow: hidden;
+
+			&.wrong {
+				opacity: 0.4;
+				background-color: rgba(128, 0, 0, 0.2);
+			}
+		}
+		&.on {
+			background-color: rgba(0, 0, 0, 0.6);
+		}
 	}
 
 	.arrow {
