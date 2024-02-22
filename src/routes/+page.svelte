@@ -1,4 +1,5 @@
 <script lang="ts">
+	export const prerender = true;
 	import { stratagems } from '$lib/stategem';
 	import StratagemKeys from '$lib/StratagemKeys.svelte';
 
