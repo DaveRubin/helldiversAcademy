@@ -33,7 +33,7 @@
 		}, 3000);
 
 		const isHighScore = time < $highScore || $highScore === '0';
-		addEvent('completed', { isHighScore, stratagem: stratagem.text });
+		addEvent('completed', { isHighScore, stratagem: stratagem.text, completionTime });
 
 		if (isHighScore) {
 			highScore.set(time);

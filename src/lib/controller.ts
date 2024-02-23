@@ -3,6 +3,10 @@ const keys: Record<string, string> = {
     'A': 'Left',
     'S': 'Down',
     'D': 'Right',
+    'ARROWUP': 'Up',
+    'ARROWLEFT': 'Left',
+    'ARROWDOWN': 'Down',
+    'ARROWRIGHT': 'Right',
 }
 
 

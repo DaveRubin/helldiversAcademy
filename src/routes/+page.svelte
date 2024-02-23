@@ -59,9 +59,23 @@
 			{/each}
 		</div>
 	</div>
+	<caption
+		>Made by David rubin, <a target="_blank" href="https://forms.gle/Xp23htAAq4KKqSNH9"
+			>(suggestions box here)
+		</a></caption
+	>
 </main>
 
 <style>
+	caption {
+		position: absolute;
+		bottom: 16px;
+		font-size: 12px;
+		left: 16px;
+	}
+	a {
+		color: white;
+	}
 	h4 {
 		margin: 0;
 		font-family: Oswald;
