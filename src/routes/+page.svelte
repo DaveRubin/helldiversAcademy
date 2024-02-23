@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { addEvent } from '$lib/analyticsStore';
 	export const prerender = true;
 	import { stratagems } from '$lib/stategem';
 	import StratagemKeys from '$lib/StratagemKeys.svelte';
@@ -15,7 +16,11 @@
 	}
 
 	function toggle(group: string) {
-		if (groupFilters[group]) {
+		const toggleOff = !!groupFilters[group];
+
+		addEvent('toggle-section', { toggleOff, section: group });
+
+		if (toggleOff) {
 			delete groupFilters[group];
 			groupFilters = { ...groupFilters };
 		} else {

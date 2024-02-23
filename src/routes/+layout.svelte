@@ -1,7 +1,9 @@
 <script lang="ts">
 	export const prerender = true;
 	import '$lib/global.css';
-	console.log('----');
+	import Analytics from '$lib/Analytics.svelte';
+	
 </script>
 
 <slot />
+<Analytics/>

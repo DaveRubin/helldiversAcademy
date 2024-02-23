@@ -7,6 +7,7 @@
 	import type { Stratagem } from './types';
 	import { stratagems } from './stategem';
 	import Arrow from './arrow.svelte';
+	import { addEvent } from './analyticsStore';
 
 	export let stratagem: Stratagem = stratagems[0];
 	let highScore = persistedStore(stratagem.text, '0');
@@ -30,7 +31,11 @@
 		setTimeout(() => {
 			completionTime = '';
 		}, 3000);
-		if (time < $highScore || $highScore === '0') {
+
+		const isHighScore = time < $highScore || $highScore === '0';
+		addEvent('completed', { isHighScore, stratagem: stratagem.text });
+
+		if (isHighScore) {
 			highScore.set(time);
 			highScoretime = completionTime;
 		}
