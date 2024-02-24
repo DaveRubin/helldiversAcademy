@@ -39,12 +39,15 @@
 <main>
 	<img class="background-image" alt="background" src="/images/banner.jpeg" />
 	<div class="main-container">
-		<div class="list-container">
-			{#key uniqueKey}
-				{#each filteredStartegem as stratagem}
-					<StratagemKeys {stratagem} on:actionDone={handleActionDone} />
-				{/each}
-			{/key}
+		<div class="staratagem-container">
+			<p class="stratagem-title">SHIFT+WASD to activate stratagems codes</p>
+			<div class="list-container">
+				{#key uniqueKey}
+					{#each filteredStartegem as stratagem}
+						<StratagemKeys {stratagem} on:actionDone={handleActionDone} />
+					{/each}
+				{/key}
+			</div>
 		</div>
 		<div class="filters-container">
 			{#each groups as group}
@@ -67,11 +70,20 @@
 </main>
 
 <style>
+	.staratagem-container {
+		flex: 2;
+		display: flex;
+		flex-direction: column;
+		overflow-x: hidden;
+	}
 	caption {
 		position: absolute;
 		bottom: 16px;
 		font-size: 12px;
 		left: 16px;
+	}
+	.stratagem-title {
+		position: inherit;
 	}
 	a {
 		color: white;
@@ -109,13 +121,25 @@
 		border-radius: 8px;
 		border: solid 1px rgba(255, 255, 255, 0.5);
 		display: flex;
+		gap: 16px;
+	}
+	body {
+		scrollbar-face-color: #eec800;
+		scrollbar-shadow-color: #006cb4;
+		scrollbar-highlight-color: #006cb4;
+		scrollbar-3dlight-color: #006cb4;
+		scrollbar-darkshadow-color: #006cb4;
+		scrollbar-track-color: #006cb4;
+		scrollbar-arrow-color: #c1c1d1;
 	}
 	.list-container {
 		overflow: scroll;
-		flex: 2;
+		overflow-x: hidden;
 	}
 	.filters-container {
-		overflow: scroll;
+		/* overflow-x: hidden;
+		overflow: scroll; */
+		padding-top: 23px;
 		flex: 1;
 	}
 	.section-filter {

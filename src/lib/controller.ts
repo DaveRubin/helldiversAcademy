@@ -15,7 +15,7 @@ export const listenToChanges = (dispatch: (action: any) => void) => {
     // Function to handle keydown events
     function handleKeydUp(event: any) {
 
-        if (event.key.toUpperCase() === 'CONTROL') {
+        if (event.key.toUpperCase() === 'SHIFT') {
             dispatch({ toggle: false })
         }
     }
@@ -25,7 +25,7 @@ export const listenToChanges = (dispatch: (action: any) => void) => {
         if (pressedKey) {
             dispatch({ pressedKey })
         }
-        if (event.key.toUpperCase() === 'CONTROL') {
+        if (event.key.toUpperCase() === 'SHIFT') {
             dispatch({ toggle: true })
         }
 
